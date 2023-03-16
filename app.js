@@ -4,6 +4,7 @@ import dbConnect from "./db/dbConnect.js";
 import bcrypt from "bcrypt";
 import User from "./db/userModel.js";
 import jwt from "jsonwebtoken";
+import auth from "./auth.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,17 +15,32 @@ app.get("/", (request, response, next) => {
   next();
 });
 
+// Curb Cores Error by adding a header here
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+});
+
+app.get("/auth", auth, (req, res) => {
+  res.json({ message: "You are authorized to access me." });
+});
+
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(email);
-  console.log(password);
-
   User.findOne({ email: email })
     .then((user) => {
       bcrypt
         .compare(password, user.password)
         .then((passwordCheck) => {
-          //IF PASSWOR DOES NOT MATCH
+          //IF PASSWORD DOES NOT MATCH
           if (!passwordCheck) {
             return res.status(400).send({
               message: "Passwords does not match!",
