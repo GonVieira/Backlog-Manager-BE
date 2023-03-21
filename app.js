@@ -45,7 +45,7 @@ app.post(
       return res.status(400).send("Invalid email address. Please try again!");
     }
     if (!errors.isEmpty() && errors.errors[0].param === "password") {
-      return res.status(400).send("Password must be longer than 6 characters!");
+      return res.status(400).send("Password must be longer than 5 characters!");
     }
 
     const { email, password } = req.body;
@@ -81,12 +81,12 @@ app.post(
             });
           })
           .catch((err) => {
-            res.status(400).send({ message: "Password does not match!", err });
+            res.status(400).send({ message: "Wrong email or password!", err });
           });
       })
       .catch((err) => {
         console.log(err);
-        res.status(404).send({ message: "Email not found", err });
+        res.status(404).send({ message: "Wrong email or password!", err });
       });
   }
 );
@@ -100,7 +100,7 @@ app.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty() && errors.errors[0].param === "email") {
-      return res.status(400).send("Invalid email address. Please try again.");
+      return res.status(400).send("Invalid email address! Please try again.");
     }
     if (!errors.isEmpty() && errors.errors[0].param === "username") {
       return res.status(400).send("Username cannot be empty!");
