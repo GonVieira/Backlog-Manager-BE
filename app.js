@@ -34,6 +34,21 @@ app.get("/auth", auth, (req, res) => {
   res.json({ message: "You are authorized to access me." });
 });
 
+app.get("/user/:email", auth, (req, res) => {
+  const email = req.params.email;
+
+  User.findOne({ email: email })
+    .then((result) => {
+      res.status(200).send({
+        message: "User has been found!",
+        data: result,
+      });
+    })
+    .catch((err) => {
+      res.status(404).send({ message: "User not found!", err });
+    });
+});
+
 app.post(
   "/login",
   body("email").isEmail(),
