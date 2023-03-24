@@ -91,6 +91,8 @@ app.post(
             //RETURN SUCCESS
             res.status(200).send({
               message: "Login successfull!",
+              _id: user._id,
+              username: user.username,
               email: user.email,
               token,
             });
