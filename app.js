@@ -91,12 +91,14 @@ app.post(
             //RETURN SUCCESS
             res.status(200).send({
               message: "Login successfull!",
-              _id: user._id,
-              username: user.username,
-              email: user.email,
-              profileImage: user.profileImage,
-              backgroundImage: user.backgroundImage,
-              token,
+              userData: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                profileImage: user.profilePicture,
+                backgroundImage: user.backgroundImage,
+                token,
+              },
             });
           })
           .catch((err) => {
@@ -137,6 +139,10 @@ app.post(
           email: email,
           username: username,
           password: hash,
+          profilePicture:
+            "https://cdn.discordapp.com/attachments/1070077755120701540/1089230539451531427/default-user-image.png",
+          backgroundImage:
+            "https://cdn.discordapp.com/attachments/1070077755120701540/1089230812433625118/bg_dots.png",
         });
 
         user
