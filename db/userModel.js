@@ -16,6 +16,16 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide a password!"],
     unique: false,
   },
+  profilePicture: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  backgroundImage: {
+    type: String,
+    required: false,
+    unique: false,
+  },
 });
 
 export default mongoose.model.Users ||
