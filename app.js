@@ -129,7 +129,9 @@ app.post(
     if (!errors.isEmpty() && errors.errors[0].param === "password") {
       return res.status(400).send("Password must be longer than 5 characters!");
     }
+
     const { email, username, password } = req.body;
+
     const saltRounds = 10;
 
     bcrypt
@@ -155,11 +157,22 @@ app.post(
           })
           // catch error if the new user wasn't added successfully to the database
           .catch((error) => {
-            console.log(error);
-            res.status(500).send({
-              message: "Error creating user.",
-              error,
-            });
+            if (error.code === 11000) {
+              if (Object.keys(error.keyPattern)[0] === "email") {
+                res.status(409).send({
+                  message: "Email already in use.",
+                });
+              } else if (Object.keys(error.keyPattern)[0] === "username") {
+                res.status(409).send({
+                  message: "Username already in use.",
+                });
+              }
+            } else {
+              res.status(500).send({
+                message: "Error creating user.",
+                error,
+              });
+            }
           });
       })
       // catch error if the password hash isn't successful
