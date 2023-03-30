@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const GameSchema = new mongoose.Schema({
+  completed: Boolean,
+  slug: String,
+  name: String,
+  backgroundImage: String,
+  platforms: [String],
+  playtime: Number,
+  metacritic: Number,
+});
+
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -26,6 +36,7 @@ const UserSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
+  games: [GameSchema],
 });
 
 export default mongoose.model.Users ||
