@@ -25,7 +25,8 @@ router.patch("/add/:id", auth, (req, res) => {
 
   User.findOneAndUpdate(
     { _id: id, "games.slug": { $ne: newGame.slug } },
-    { $push: { games: newGame } }
+    { $push: { games: newGame } },
+    { new: true }
   )
     .then((result) => {
       if (result == null) {
@@ -36,6 +37,100 @@ router.patch("/add/:id", auth, (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({ message: "Error updating user.", err });
+    });
+});
+
+router.patch("/delete/:id", auth, (req, res) => {
+  const gameToDelete = req.body.slug;
+  const id = req.params.id;
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { $pull: { games: { slug: gameToDelete } } },
+    { new: true }
+  )
+    .then((result) => {
+      res.status(200).send({ message: "Game deleted successfully!", result });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error deleting Game.", err });
+    });
+});
+
+router.patch("/completed/:id", auth, (req, res) => {
+  const gameToChange = req.body.slug;
+  const valueToChange = req.body.completed;
+  const id = req.params.id;
+
+  User.findOneAndUpdate(
+    { _id: id, "games.slug": gameToChange },
+    { $set: { "games.$.completed": valueToChange } },
+    { new: true }
+  )
+    .then((result) => {
+      res.status(200).send({ message: "Game updated successfully!", result });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Game.", err });
+    });
+});
+
+router.patch("/profilePicture/:id", auth, (req, res) => {
+  const id = req.params.id;
+  const newPicture = req.body.picture;
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { $set: { profilePicture: newPicture } },
+    { new: true }
+  )
+    .then((result) => {
+      res
+        .status(200)
+        .send({ message: "Profile picture updated successfully!", result });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating profile picture.", err });
+    });
+});
+
+router.patch("/backgroundImage/:id", auth, (req, res) => {
+  const id = req.params.id;
+  const newBackgroundImage = req.body.backgroundImage;
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { $set: { backgroundImage: newBackgroundImage } },
+    { new: true }
+  )
+    .then((result) => {
+      res
+        .status(200)
+        .send({ message: "Background image updated successfully!", result });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ message: "Error updating Background image.", err });
+    });
+});
+
+router.patch("/username/:id", auth, (req, res) => {
+  const id = req.params.id;
+  const newUsername = req.body.username;
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { $set: { username: newUsername } },
+    { new: true }
+  )
+    .then((result) => {
+      res
+        .status(200)
+        .send({ message: "Username updated successfully!", result });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Username.", err });
     });
 });
 
