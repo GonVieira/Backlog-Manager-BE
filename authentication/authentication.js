@@ -54,6 +54,7 @@ router.post(
                 email: user.email,
                 profileImage: user.profilePicture,
                 backgroundImage: user.backgroundImage,
+                games: user.games,
                 token,
               },
             });
