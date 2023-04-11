@@ -54,6 +54,7 @@ router.patch("/add/:id", auth, (req, res) => {
       res.status(200).send({ message: "Sucess.", result });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send({ message: "Error updating user.", err });
     });
 });
