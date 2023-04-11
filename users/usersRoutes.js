@@ -4,6 +4,7 @@ import auth from "../auth.js";
 
 const router = express.Router();
 
+//get user
 router.get("/:id", auth, (req, res) => {
   const id = req.params.id;
 
@@ -19,6 +20,23 @@ router.get("/:id", auth, (req, res) => {
     });
 });
 
+//get user games
+router.get("/games/:id", auth, (req, res) => {
+  const id = req.params.id;
+
+  User.findOne({ _id: id })
+    .then((result) => {
+      res.status(200).send({
+        message: "User games have been found!",
+        data: result.games,
+      });
+    })
+    .catch((err) => {
+      res.status(404).send({ message: "User games not found", err });
+    });
+});
+
+//add game to user game list
 router.patch("/add/:id", auth, (req, res) => {
   const newGame = req.body.game;
   const id = req.params.id;
@@ -40,6 +58,7 @@ router.patch("/add/:id", auth, (req, res) => {
     });
 });
 
+//delete game from user game list
 router.patch("/delete/:id", auth, (req, res) => {
   const gameToDelete = req.body.slug;
   const id = req.params.id;
@@ -57,6 +76,7 @@ router.patch("/delete/:id", auth, (req, res) => {
     });
 });
 
+//update the completed status of one game form the user list of games
 router.patch("/completed/:id", auth, (req, res) => {
   const gameToChange = req.body.slug;
   const valueToChange = req.body.completed;
@@ -75,6 +95,7 @@ router.patch("/completed/:id", auth, (req, res) => {
     });
 });
 
+//update user profile picture
 router.patch("/profilePicture/:id", auth, (req, res) => {
   const id = req.params.id;
   const newPicture = req.body.picture;
@@ -94,6 +115,7 @@ router.patch("/profilePicture/:id", auth, (req, res) => {
     });
 });
 
+//update user background image
 router.patch("/backgroundImage/:id", auth, (req, res) => {
   const id = req.params.id;
   const newBackgroundImage = req.body.backgroundImage;
@@ -115,6 +137,7 @@ router.patch("/backgroundImage/:id", auth, (req, res) => {
     });
 });
 
+//update username
 router.patch("/username/:id", auth, (req, res) => {
   const id = req.params.id;
   const newUsername = req.body.username;
