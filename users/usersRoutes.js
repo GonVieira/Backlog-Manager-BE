@@ -36,6 +36,25 @@ router.get("/games/:id", auth, (req, res) => {
     });
 });
 
+//check if game exists in user library
+router.get("/game/:id", auth, (req, res) => {
+  const gameSlug = req.body.gameSlug;
+  const id = req.params.id;
+
+  User.findOne({ _id: id, "games.slug": gameSlug })
+    .then((result) => {
+      if (result === null) {
+        res.status(404).send({ message: "Game not found in user library!" });
+      } else {
+        res.status(200).send({ message: "User owns this game!" });
+      }
+      return;
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Internal Server Error!", err });
+    });
+});
+
 //add game to user game list
 router.patch("/add/:id", auth, (req, res) => {
   const newGame = req.body.game;
