@@ -37,7 +37,7 @@ router.get("/games/:id", auth, (req, res) => {
 });
 
 //check if game exists in user library
-router.get("/game/:id", auth, (req, res) => {
+router.post("/game/:id", auth, (req, res) => {
   const gameSlug = req.body.gameSlug;
   const id = req.params.id;
 
