@@ -1,7 +1,7 @@
 import express from "express";
 import User from "../db/userModel.js";
 import auth from "../auth.js";
-
+import mongoose from "mongoose";
 const router = express.Router();
 
 //get user
@@ -33,6 +33,58 @@ router.get("/games/:id", auth, (req, res) => {
     })
     .catch((err) => {
       res.status(404).send({ message: "User games not found", err });
+    });
+});
+
+//get user completed games
+router.get("/games/completed/:id", auth, (req, res) => {
+  const idParams = req.params.id;
+  const id = new mongoose.Types.ObjectId(idParams);
+
+  User.aggregate([
+    { $match: { _id: id } },
+    { $unwind: "$games" },
+    { $match: { "games.completed": true } },
+  ])
+    .then((result) => {
+      if (result === null) {
+        res
+          .status(404)
+          .send({ message: "User does not have any completed games." });
+      } else {
+        res
+          .status(200)
+          .send({ message: "User completed games found!", data: result });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Internal Server Error!", err });
+    });
+});
+
+//get user Backlogged games
+router.get("/games/uncompleted/:id", auth, (req, res) => {
+  const idParams = req.params.id;
+  const id = new mongoose.Types.ObjectId(idParams);
+
+  User.aggregate([
+    { $match: { _id: id } },
+    { $unwind: "$games" },
+    { $match: { "games.completed": false } },
+  ])
+    .then((result) => {
+      if (result === null) {
+        res
+          .status(404)
+          .send({ message: "User does not have any uncompleted games." });
+      } else {
+        res
+          .status(200)
+          .send({ message: "User uncompleted games found!", data: result });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Internal Server Error!", err });
     });
 });
 
@@ -73,7 +125,6 @@ router.patch("/add/:id", auth, (req, res) => {
       res.status(200).send({ message: "Sucess.", result });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).send({ message: "Error updating user.", err });
     });
 });
