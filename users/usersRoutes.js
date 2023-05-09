@@ -45,6 +45,14 @@ router.get("/games/completed/:id", auth, (req, res) => {
     { $match: { _id: id } },
     { $unwind: "$games" },
     { $match: { "games.completed": true } },
+    {
+      $group: {
+        _id: "$_id",
+        games: {
+          $push: "$games",
+        },
+      },
+    },
   ])
     .then((result) => {
       if (result === null) {
@@ -71,6 +79,14 @@ router.get("/games/uncompleted/:id", auth, (req, res) => {
     { $match: { _id: id } },
     { $unwind: "$games" },
     { $match: { "games.completed": false } },
+    {
+      $group: {
+        _id: "$_id",
+        games: {
+          $push: "$games",
+        },
+      },
+    },
   ])
     .then((result) => {
       if (result === null) {
