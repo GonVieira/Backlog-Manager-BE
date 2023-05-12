@@ -35,6 +35,14 @@ router.get("/games/:id", auth, (req, res) => {
       res.status(404).send({ message: "User games not found", err });
     });
 });
+/**
+//Get user games Version 2
+router.get("/games/v2/:id", auth, (req, res) => {
+  const idParams = req.params.id;
+  const id = new mongoose.Types.ObjectId(idParams);
+  const queries = req.query;
+})
+ */
 
 //get user completed games
 router.get("/games/completed/:id", auth, (req, res) => {
@@ -70,7 +78,7 @@ router.get("/games/completed/:id", auth, (req, res) => {
     });
 });
 
-//get user Backlogged games
+//get user backlogged games
 router.get("/games/uncompleted/:id", auth, (req, res) => {
   const idParams = req.params.id;
   const id = new mongoose.Types.ObjectId(idParams);

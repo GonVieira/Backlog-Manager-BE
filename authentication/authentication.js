@@ -103,6 +103,7 @@ router.post(
             "https://cdn.discordapp.com/attachments/1070077755120701540/1089230539451531427/default-user-image.png",
           backgroundImage:
             "https://cdn.discordapp.com/attachments/1070077755120701540/1089230812433625118/bg_dots.png",
+          bio: "Hello world!",
           games: [],
         });
 

@@ -36,6 +36,11 @@ const UserSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
+  bio: {
+    type: String,
+    required: false,
+    unique: false,
+  },
   games: [GameSchema],
 });
 
