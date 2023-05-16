@@ -252,4 +252,25 @@ router.patch("/username/:id", auth, (req, res) => {
     });
 });
 
+router.patch("/biography/:id", auth, (req, res) => {
+  const id = req.params.id;
+  const newBiography = req.body.biography;
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { $set: { bio: newBiography } },
+    { new: true }
+  )
+    .then((result) => {
+      res
+        .status(200)
+        .send({ message: "Biography updated successfully!", result });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating bioography.", err });
+    });
+});
+
 export default router;
+
+
