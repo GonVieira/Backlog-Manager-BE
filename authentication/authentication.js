@@ -52,7 +52,7 @@ router.post(
                 _id: user._id,
                 username: user.username,
                 email: user.email,
-                profileImage: user.profilePicture,
+                profilePicture: user.profilePicture,
                 backgroundImage: user.backgroundImage,
                 bio: user.bio,
                 token,

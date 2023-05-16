@@ -272,5 +272,3 @@ router.patch("/biography/:id", auth, (req, res) => {
 });
 
 export default router;
-
-
