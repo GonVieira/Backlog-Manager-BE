@@ -267,7 +267,7 @@ router.patch("/biography/:id", auth, (req, res) => {
         .send({ message: "Biography updated successfully!", result });
     })
     .catch((err) => {
-      res.status(500).send({ message: "Error updating bioography.", err });
+      res.status(500).send({ message: "Error updating biography.", err });
     });
 });
 

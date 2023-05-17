@@ -48,13 +48,15 @@ router.post(
             //RETURN SUCCESS
             res.status(200).send({
               message: "Login successfull!",
-              userData: {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                profilePicture: user.profilePicture,
-                backgroundImage: user.backgroundImage,
-                bio: user.bio,
+              data: {
+                user: {
+                  _id: user._id,
+                  username: user.username,
+                  email: user.email,
+                  profilePicture: user.profilePicture,
+                  backgroundImage: user.backgroundImage,
+                  bio: user.bio,
+                },
                 token,
               },
             });
