@@ -1,6 +1,10 @@
 # Backlog-Manager-BE
 Backlog Manager backend project, built with node, expresse and mongoose.
 
+## Warning ⚠️
+
+The first API call may take some time since its deployed on a free server. Please be patient.
+
 ## ENVIRONMENT VARIABLE
 
 For the project to work in your machine you must create a MongoDB database and put the link in a environment variable.
