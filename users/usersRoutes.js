@@ -191,84 +191,27 @@ router.patch("/completed/:id", auth, (req, res) => {
 });
 
 //update user profile picture
-router.patch("/profilePicture/:id", auth, (req, res) => {
+router.patch("/update/:id", auth, (req, res) => {
   const id = req.params.id;
-  const newPicture = req.body.picture;
+  const updatedUser = req.body.updatedUser;
 
   User.findOneAndUpdate(
     { _id: id },
-    { $set: { profilePicture: newPicture } },
+    {
+      $set: {
+        profilePicture: updatedUser.profilePicture,
+        backgroundImage: updatedUser.backgroundImage,
+        username: updatedUser.userName,
+        bio: updatedUser.bio,
+      },
+    },
     { new: true }
   )
     .then((result) => {
-      res
-        .status(200)
-        .send({ message: "Profile picture updated successfully!", result });
+      res.status(200).send({ message: "User updated successfully!", result });
     })
     .catch((err) => {
-      res.status(500).send({ message: "Error updating profile picture.", err });
+      res.status(500).send({ message: "Error updating user", err });
     });
 });
-
-//update user background image
-router.patch("/backgroundImage/:id", auth, (req, res) => {
-  const id = req.params.id;
-  const newBackgroundImage = req.body.backgroundImage;
-
-  User.findOneAndUpdate(
-    { _id: id },
-    { $set: { backgroundImage: newBackgroundImage } },
-    { new: true }
-  )
-    .then((result) => {
-      res
-        .status(200)
-        .send({ message: "Background image updated successfully!", result });
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send({ message: "Error updating Background image.", err });
-    });
-});
-
-//update username
-router.patch("/username/:id", auth, (req, res) => {
-  const id = req.params.id;
-  const newUsername = req.body.username;
-
-  User.findOneAndUpdate(
-    { _id: id },
-    { $set: { username: newUsername } },
-    { new: true }
-  )
-    .then((result) => {
-      res
-        .status(200)
-        .send({ message: "Username updated successfully!", result });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error updating Username.", err });
-    });
-});
-
-router.patch("/biography/:id", auth, (req, res) => {
-  const id = req.params.id;
-  const newBiography = req.body.biography;
-
-  User.findOneAndUpdate(
-    { _id: id },
-    { $set: { bio: newBiography } },
-    { new: true }
-  )
-    .then((result) => {
-      res
-        .status(200)
-        .send({ message: "Biography updated successfully!", result });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error updating biography.", err });
-    });
-});
-
 export default router;
