@@ -5,9 +5,9 @@ const auth = async (req, res, next) => {
     //get token
     const token = await req.headers.authorization.split(" ")[1];
     //check if the token matches the supposed origin
-    const decodedToken = await jwt.verify(token, "AHOOOGA_TOKEN");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await decodedToken;
+    const user = decodedToken;
 
     req.user = user;
 

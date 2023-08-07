@@ -6,6 +6,39 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+// Get user data if token available, used to keep user logged in case the page is reloaded.
+router.post("/tokenLogin", (req, res) => {
+  const token = req.body.token;
+  let decoded;
+
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.sendStatus(401);
+  }
+
+  User.findOne({ email: decoded.userEmail })
+    .then((user) => {
+      //RETURN SUCCESS
+      res.status(200).send({
+        message: "Login successfull!",
+        data: {
+          user: {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            backgroundImage: user.backgroundImage,
+            bio: user.bio,
+          },
+        },
+      });
+    })
+    .catch((error) => {
+      res.status(404).send({ message: "User not found!", error });
+    });
+});
+
 router.post(
   "/login",
   body("email").isEmail(),
@@ -29,9 +62,8 @@ router.post(
           .then((passwordCheck) => {
             //IF PASSWORD DOES NOT MATCH
             if (!passwordCheck) {
-              return res.status(400).send({
+              return res.status(401).send({
                 message: "Passwords does not match!",
-                error,
               });
             }
 
@@ -41,7 +73,7 @@ router.post(
                 userId: user._id,
                 userEmail: user.email,
               },
-              "AHOOOGA_TOKEN",
+              process.env.JWT_SECRET,
               { expiresIn: "24h" }
             );
 
@@ -63,12 +95,12 @@ router.post(
           })
           .catch((err) => {
             console.log(err);
-            res.status(400).send({ message: "Wrong email or password!", err });
+            res.status(401).send({ message: "Wrong email or password!", err });
           });
       })
       .catch((err) => {
         console.log(err);
-        res.status(404).send({ message: "Wrong email or password!", err });
+        res.status(401).send({ message: "Wrong email or password!", err });
       });
   }
 );
@@ -82,7 +114,7 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty() && errors.errors[0].param === "email") {
-      return res.status(400).send("Invalid email address! Please try again.");
+      return res.status(401).send("Invalid email address! Please try again.");
     }
     if (!errors.isEmpty() && errors.errors[0].param === "username") {
       return res.status(400).send("Username cannot be empty!");

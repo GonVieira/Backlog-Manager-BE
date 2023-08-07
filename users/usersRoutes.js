@@ -190,7 +190,7 @@ router.patch("/completed/:id", auth, (req, res) => {
     });
 });
 
-//update user profile picture
+//update user
 router.patch("/update/:id", auth, (req, res) => {
   const id = req.params.id;
   const updatedUser = req.body.updatedUser;
