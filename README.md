@@ -1,6 +1,9 @@
 # Backlog-Manager-BE
 Backlog Manager backend project, built with node, expresse and mongoose.
 
+## Documentation
+All API endpoints - https://documenter.getpostman.com/view/19248187/2s93sc4CZ4
+
 ## Warning ⚠️
 
 The first API call may take some time since its deployed on a free server. Please be patient.
